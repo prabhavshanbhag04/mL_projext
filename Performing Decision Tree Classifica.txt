@@ -1,0 +1,465 @@
+Performing Decision Tree Classification
+A Decision Tree is a non-parametric supervised learning method used for classification and regression. The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from the data features. We'll train a Decision Tree model and evaluate its performance.
+
+
+[ ]
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Initialize the DecisionTreeClassifier
+# random_state: Controls the randomness of the estimator.
+decision_tree_model = DecisionTreeClassifier(random_state=42)
+
+# Train the Decision Tree model
+decision_tree_model.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred_dt = decision_tree_model.predict(X_test_scaled)
+
+# Evaluate the Decision Tree model
+print("\nDecision Tree Model Accuracy:", accuracy_score(y_test, y_pred_dt))
+
+print("\nDecision Tree Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_dt))
+
+print("\nDecision Tree Classification Report:")
+print(classification_report(y_test, y_pred_dt))
+
+Decision Tree Model Accuracy: 0.9892021765246273
+
+Decision Tree Confusion Matrix:
+[[35057   368]
+ [  396 34934]]
+
+Decision Tree Classification Report:
+                 support
+
+           0       0.99      0.99      0.99     35425
+           1       0.99      0.99      0.99     35330
+
+    accuracy                           0.99     70755
+   macro avg       0.99      0.99      0.99     70755
+weighted avg       0.99      0.99      0.99     70755
+
+Performing K-Nearest Neighbors (KNN) Classification
+K-Nearest Neighbors (KNN) is a non-parametric, lazy learning algorithm used for both classification and regression. In classification, it assigns a class based on the majority vote of its 'k' nearest neighbors in the feature space. We'll train a KNN model and evaluate its performance.
+
+
+[ ]
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Initialize the KNeighborsClassifier
+# n_neighbors: Number of neighbors to use by default for kneighbors queries.
+# We'll start with a common value like 5, but this can be tuned.
+knn_model = KNeighborsClassifier(n_neighbors=5)
+
+# Train the KNN model
+knn_model.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred_knn = knn_model.predict(X_test_scaled)
+
+# Evaluate the KNN model
+print("\nKNN Model Accuracy:", accuracy_score(y_test, y_pred_knn))
+
+print("\nKNN Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_knn))
+
+print("\nKNN Classification Report:")
+print(classification_report(y_test, y_pred_knn))
+
+KNN Model Accuracy: 0.9859656561373754
+
+KNN Confusion Matrix:
+[[35039   386]
+ [  607 34723]]
+
+KNN Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.98      0.99      0.99     35425
+           1       0.99      0.98      0.99     35330
+
+    accuracy                           0.99     70755
+   macro avg       0.99      0.99      0.99     70755
+weighted avg       0.99      0.99      0.99     70755
+
+Performing Random Forest Classification
+Random Forest is an ensemble learning method that operates by constructing multiple decision trees during training and outputting the mode of the classes (for classification) or mean prediction (for regression) of the individual trees. It's known for its high accuracy and ability to handle complex datasets.
+
+
+[ ]
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Initialize the RandomForestClassifier
+# n_estimators: The number of trees in the forest.
+# random_state: Controls both the randomness of the bootstrapping of the samples and the splitting of the nodes.
+random_forest_model = RandomForestClassifier(
+    n_estimators=100, # A common default, can be tuned
+    random_state=42,
+    n_jobs=-1 # Use all available CPU cores
+)
+
+# Train the Random Forest model
+random_forest_model.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred_rf = random_forest_model.predict(X_test_scaled)
+
+# Evaluate the Random Forest model
+print("\nRandom Forest Model Accuracy:", accuracy_score(y_test, y_pred_rf))
+
+print("\nRandom Forest Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_rf))
+
+print("\nRandom Forest Classification Report:")
+print(classification_report(y_test, y_pred_rf))
+
+Random Forest Model Accuracy: 0.9905872376510494
+
+Random Forest Confusion Matrix:
+[[35103   322]
+ [  344 34986]]
+
+Random Forest Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.99      0.99      0.99     35425
+           1       0.99      0.99      0.99     35330
+
+    accuracy                           0.99     70755
+   macro avg       0.99      0.99      0.99     70755
+weighted avg       0.99      0.99      0.99     70755
+
+Performing AdaBoost Classification
+AdaBoost (Adaptive Boosting) is an ensemble learning method that trains a series of weak learners (typically decision trees) sequentially. Each subsequent learner focuses on the mistakes of the previous ones, thereby improving the overall model accuracy. We'll train an AdaBoost model and evaluate its performance.
+
+
+[ ]
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Initialize a base learner (e.g., a shallow Decision Tree)
+# Using a max_depth of 1 makes it a 'decision stump', which is common for AdaBoost
+base_estimator = DecisionTreeClassifier(max_depth=1, random_state=42)
+
+# Initialize the AdaBoostClassifier
+# n_estimators: The maximum number of estimators at which boosting is terminated.
+# learning_rate: Weights applied to each classifier at each boosting iteration.
+adaboost_model = AdaBoostClassifier(
+    estimator=base_estimator,
+    n_estimators=50,
+    learning_rate=1.0,
+    random_state=42
+)
+
+# Train the AdaBoost model
+adaboost_model.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred_adaboost = adaboost_model.predict(X_test_scaled)
+
+# Evaluate the AdaBoost model
+print("\nAdaBoost Model Accuracy:", accuracy_score(y_test, y_pred_adaboost))
+
+print("\nAdaBoost Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred_adaboost))
+
+print("\nAdaBoost Classification Report:")
+print(classification_report(y_test, y_pred_adaboost))
+
+AdaBoost Model Accuracy: 0.9858667231997739
+
+AdaBoost Confusion Matrix:
+[[35028   397]
+ [  603 34727]]
+
+AdaBoost Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.98      0.99      0.99     35425
+           1       0.99      0.98      0.99     35330
+
+    accuracy                           0.99     70755
+   macro avg       0.99      0.99      0.99     70755
+weighted avg       0.99      0.99      0.99     70755
+
+Creating a Binary Target Variable for Classification
+Since logistic regression is a classification algorithm, we need a categorical target variable. We'll create a binary target called high_consumption based on the Global_active_power. We'll use the median of Global_active_power as a threshold to categorize consumption into 'high' or 'low'.
+
+
+[ ]
+# Calculate the median of 'Global_active_power' to use as a threshold
+median_global_active_power = df_cleaned['Global_active_power'].median()
+
+# Create the binary target variable 'high_consumption'
+# 1 if Global_active_power is above the median, 0 otherwise
+df_cleaned['high_consumption'] = (df_cleaned['Global_active_power'] > median_global_active_power).astype(int)
+
+print(f"Median Global_active_power: {median_global_active_power:.2f}")
+print("Distribution of the new target variable 'high_consumption':")
+display(df_cleaned['high_consumption'].value_counts())
+display(df_cleaned.head())
+
+Performing Logistic Regression and Evaluation
+Now that we have a binary target variable, we can proceed with training a logistic regression model. We'll use other numerical features as predictors. We'll split the data into training and testing sets, standardize the features, train the model, and then evaluate its performance using accuracy, a confusion matrix, and a classification report.
+
+
+[ ]
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.preprocessing import StandardScaler
+
+# Define features (X) and target (y)
+# We'll drop 'Global_active_power' from features to avoid data leakage
+# 'Date', 'Time', and 'index' are also not suitable as direct features for this model
+# Ensure `numeric_cols` is defined and contains only relevant numeric columns
+features = [col for col in ['Global_reactive_power', 'Voltage', 'Global_intensity', 'Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'] if col in df_cleaned.columns]
+features_df = df_cleaned[features].dropna() # Drop rows with NaNs in selected features
+target_series = df_cleaned.loc[features_df.index, 'high_consumption'] # Align target with cleaned features
+
+X = features_df
+y = target_series
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+
+# Standardize the features (important for logistic regression)
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Initialize and train the Logistic Regression model
+log_reg_model = LogisticRegression(random_state=42, solver='liblinear') # 'liblinear' is good for smaller datasets
+log_reg_model.fit(X_train_scaled, y_train)
+
+# Make predictions on the test set
+y_pred = log_reg_model.predict(X_test_scaled)
+
+# Evaluate the model
+print("\nModel Accuracy:", accuracy_score(y_test, y_pred))
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+Model Accuracy: 0.9873648505405979
+
+Confusion Matrix:
+[[35094   331]
+ [  563 34767]]
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.98      0.99      0.99     35425
+           1       0.99      0.98      0.99     35330
+
+    accuracy                           0.99     70755
+   macro avg       0.99      0.99      0.99     70755
+weighted avg       0.99      0.99      0.99     70755
+
+Correlation Heatmap
+A correlation heatmap visualizes the pairwise correlation between numerical variables. It helps in understanding which variables move together (positive correlation) or in opposite directions (negative correlation), and which ones are largely independent.
+
+
+[ ]
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Calculate the correlation matrix for the numeric columns in the cleaned DataFrame
+correlation_matrix = df_cleaned[numeric_cols].corr()
+
+# Set up the matplotlib figure
+plt.figure(figsize=(10, 8))
+
+# Draw the heatmap
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=.5)
+plt.title('Correlation Heatmap of Numeric Features (After Outlier Removal)')
+plt.show()
+
+Plotting Highly Correlated Pairs
+Based on the correlation heatmap, we can identify pairs of variables with strong positive or negative correlations. Visualizing these pairs with scatter plots can provide deeper insights into their relationship.
+
+
+[ ]
+# Get the absolute values of the correlation matrix to find the strongest correlations
+abs_corr_matrix = correlation_matrix.abs()
+
+# Select the upper triangle of the correlation matrix to avoid duplicates and self-correlations
+uppper_tri = abs_corr_matrix.where(np.triu(np.ones(abs_corr_matrix.shape), k=1).astype(bool))
+
+# Find the top 3 most correlated pairs (you can adjust this number)
+top_correlated_pairs = uppper_tri.unstack().sort_values(ascending=False).drop_duplicates().head(3)
+
+print("Top 3 Most Correlated Pairs:")
+print(top_correlated_pairs)
+
+# Plotting the highly correlated pairs
+plt.figure(figsize=(15, 5))
+for i, (idx, value) in enumerate(top_correlated_pairs.items()):
+    col1, col2 = idx
+    plt.subplot(1, 3, i + 1) # Arrange in 1 row, 3 columns
+    sns.scatterplot(x=df_cleaned[col1], y=df_cleaned[col2], alpha=0.6)
+    plt.title(f'Correlation: {value:.2f}\n{col1} vs {col2}')
+    plt.xlabel(col1)
+    plt.ylabel(col2)
+plt.tight_layout()
+plt.show()
+
+Visualizing Outliers using Box Plots
+Box plots are an excellent way to visualize the distribution of numerical data and identify potential outliers. Outliers are typically represented as points extending beyond the 'whiskers' of the box plot.
+
+
+[ ]
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# List of numeric columns identified earlier
+numeric_cols = [
+    'Global_active_power', 'Global_reactive_power', 'Voltage',
+    'Global_intensity', 'Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'
+]
+
+# Set up the matplotlib figure and axes for subplots
+plt.figure(figsize=(15, 10))
+for i, col in enumerate(numeric_cols):
+    plt.subplot(3, 3, i + 1) # Arrange in 3 rows, 3 columns
+    sns.boxplot(y=df[col])
+    plt.title(f'Box plot of {col}')
+    plt.ylabel('') # Remove y-axis label to avoid clutter
+plt.tight_layout()
+plt.suptitle('Box Plots for Numeric Features (Outlier Visualization)', y=1.02, fontsize=16)
+plt.show()
+
+Removing Outliers using the Z-score Method
+The Z-score measures how many standard deviations an element is from the mean. A common practice is to consider data points with a Z-score above a certain threshold (e.g., 2 or 3) as outliers. We will remove these rows from the DataFrame.
+
+
+[ ]
+from scipy.stats import zscore
+
+# Create a copy of the DataFrame to perform outlier removal
+df_cleaned = df.copy()
+
+# Define a Z-score threshold
+z_score_threshold = 3
+
+rows_before_removal = df_cleaned.shape[0]
+print(f"Number of rows before outlier removal: {rows_before_removal}")
+
+# Iterate through each numeric column to remove outliers
+for col in numeric_cols:
+    # Calculate Z-scores for the current column, ignoring NaNs
+    col_z_scores = np.abs(zscore(df_cleaned[col].dropna()))
+
+    # Get the indices of outliers in the original column (before dropna)
+    outlier_indices = df_cleaned[col].dropna()[col_z_scores > z_score_threshold].index
+
+    # Drop rows corresponding to these outlier indices
+    df_cleaned.drop(outlier_indices, inplace=True)
+
+
+rows_after_removal = df_cleaned.shape[0]
+print(f"Number of rows after outlier removal: {rows_after_removal}")
+print(f"Number of rows removed: {rows_before_removal - rows_after_removal}")
+
+print("\nFirst 5 rows of the DataFrame after outlier removal:")
+display(df_cleaned.head())
+
+print("\nDataFrame Info after outlier removal:")
+df_cleaned.info()
+
+
+[ ]
+import pandas as pd
+import numpy as np
+
+# Load the dataset
+df = pd.read_csv('/content/household_power_consumption.csv', sep=',', low_memory=False)
+
+# Display the first 5 rows of the dataframe
+print("First 5 rows of the dataset:")
+display(df.head())
+
+
+[ ]
+# Check for null values before any replacement
+print("\nNull values before replacement:")
+display(df.isnull().sum())
+
+# Although pd.read_csv often converts empty strings to NaN by default,
+# we can explicitly ensure all non-numeric/missing string values are treated as NaN.
+# For this specific dataset, '?' is used to denote missing values.
+# We will replace '?' with NaN across the entire DataFrame.
+df.replace('?', np.nan, inplace=True)
+
+# Convert relevant columns to numeric, coercing errors to NaN
+# Assuming the power consumption columns are the ones to be analyzed numerically
+# Let's identify columns that are likely to be numeric but might contain '?'
+numeric_cols = [
+    'Global_active_power', 'Global_reactive_power', 'Voltage',
+    'Global_intensity', 'Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'
+]
+
+for col in numeric_cols:
+    if col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+# Check for null values after replacement
+print("\nNull values after replacing '?' and coercing to numeric:")
+display(df.isnull().sum())
+
+print("\nDataFrame Info after preprocessing:")
+df.info()
+
+
+[ ]
+import pandas as pd
+import numpy as np
+
+# Load the dataset
+df = pd.read_csv('/content/household_power_consumption.csv', sep=',', low_memory=False)
+
+# Display the first 5 rows of the dataframe
+print("First 5 rows of the dataset:")
+display(df.head())
+
+
+[ ]
+# Check for null values before any replacement
+print("\nNull values before replacement:")
+display(df.isnull().sum())
+
+# Although pd.read_csv often converts empty strings to NaN by default,
+# we can explicitly ensure all non-numeric/missing string values are treated as NaN.
+# For this specific dataset, '?' is used to denote missing values.
+# We will replace '?' with NaN across the entire DataFrame.
+df.replace('?', np.nan, inplace=True)
+
+# Convert relevant columns to numeric, coercing errors to NaN
+# Assuming the power consumption columns are the ones to be analyzed numerically
+# Let's identify columns that are likely to be numeric but might contain '?'
+numeric_cols = [
+    'Global_active_power', 'Global_reactive_power', 'Voltage',
+    'Global_intensity', 'Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'
+]
+
+for col in numeric_cols:
+    if col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+# Check for null values after replacement
+print("\nNull values after replacing '?' and coercing to numeric:")
+display(df.isnull().sum())
+
+print("\nDataFrame Info after preprocessing:")
+df.info()
+
+Colab paid products - Cancel contracts here

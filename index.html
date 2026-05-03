@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Household Power Consumption - ML Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo">⚡ PowerML</div>
+      <nav>
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#data" class="nav-link">Dataset</a>
+        <a href="#models" class="nav-link">Models</a>
+        <a href="#predict" class="nav-link">Predict</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="overview" class="section hero">
+      <h1>Household Power Consumption</h1>
+      <p class="subtitle">ML-powered analysis of electricity usage patterns with binary classification of high vs low consumption.</p>
+      <div class="stat-cards">
+        <div class="stat-card">
+          <span class="stat-value" id="stat-rows">2,075,259</span>
+          <span class="stat-label">Total Records</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">7</span>
+          <span class="stat-label">Features</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">5</span>
+          <span class="stat-label">ML Models</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">~99%</span>
+          <span class="stat-label">Best Accuracy</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dataset Section -->
+    <section id="data" class="section">
+      <h2>Dataset Overview</h2>
+      <p class="section-desc">Minute-level electricity measurements from a single household (Jan 2007 – Nov 2010).</p>
+
+      <div class="charts-grid">
+        <div class="chart-card wide">
+          <h3>Global Active Power Distribution</h3>
+          <canvas id="histChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>High vs Low Consumption Split</h3>
+          <canvas id="pieChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Average Sub-metering Usage</h3>
+          <canvas id="subMeterChart"></canvas>
+        </div>
+        <div class="chart-card wide">
+          <h3>Feature Correlation (Heatmap)</h3>
+          <div id="heatmap" class="heatmap-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Models Section -->
+    <section id="models" class="section">
+      <h2>Model Performance</h2>
+      <p class="section-desc">All models trained on 70% of data, tested on 30%, with StandardScaler preprocessing.</p>
+
+      <div class="model-cards">
+        <div class="model-card best">
+          <div class="model-badge">Best</div>
+          <h3>Random Forest</h3>
+          <div class="accuracy-ring" data-value="99.06">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fill" style="--pct:99.06"/>
+            </svg>
+            <span class="ring-label">99.06%</span>
+          </div>
+          <div class="model-stats">
+            <span>Precision: 0.99</span><span>Recall: 0.99</span><span>F1: 0.99</span>
+          </div>
+        </div>
+        <div class="model-card">
+          <h3>Decision Tree</h3>
+          <div class="accuracy-ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fill" style="--pct:98.92"/>
+            </svg>
+            <span class="ring-label">98.92%</span>
+          </div>
+          <div class="model-stats">
+            <span>Precision: 0.99</span><span>Recall: 0.99</span><span>F1: 0.99</span>
+          </div>
+        </div>
+        <div class="model-card">
+          <h3>Logistic Regression</h3>
+          <div class="accuracy-ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fill" style="--pct:98.74"/>
+            </svg>
+            <span class="ring-label">98.74%</span>
+          </div>
+          <div class="model-stats">
+            <span>Precision: 0.99</span><span>Recall: 0.99</span><span>F1: 0.99</span>
+          </div>
+        </div>
+        <div class="model-card">
+          <h3>AdaBoost</h3>
+          <div class="accuracy-ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fill" style="--pct:98.59"/>
+            </svg>
+            <span class="ring-label">98.59%</span>
+          </div>
+          <div class="model-stats">
+            <span>Precision: 0.99</span><span>Recall: 0.98</span><span>F1: 0.99</span>
+          </div>
+        </div>
+        <div class="model-card">
+          <h3>KNN (k=5)</h3>
+          <div class="accuracy-ring">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="40" class="ring-bg"/>
+              <circle cx="50" cy="50" r="40" class="ring-fill" style="--pct:98.60"/>
+            </svg>
+            <span class="ring-label">98.60%</span>
+          </div>
+          <div class="model-stats">
+            <span>Precision: 0.99</span><span>Recall: 0.98</span><span>F1: 0.99</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Table -->
+      <div class="table-card">
+        <h3>Classification Report — All Algorithms (Weighted Avg)</h3>
+        <div class="table-wrapper">
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Algorithm</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1-Score</th>
+                <th>Accuracy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="best-row">
+                <td class="algo-name rf">Random Forest ★</td>
+                <td>0.99</td><td>0.99</td><td>0.99</td>
+                <td class="accuracy-cell best-acc">99.06%</td>
+              </tr>
+              <tr>
+                <td class="algo-name dt">Decision Tree</td>
+                <td>0.99</td><td>0.99</td><td>0.99</td>
+                <td class="accuracy-cell">98.92%</td>
+              </tr>
+              <tr>
+                <td class="algo-name lr">Logistic Regression</td>
+                <td>0.99</td><td>0.99</td><td>0.99</td>
+                <td class="accuracy-cell">98.74%</td>
+              </tr>
+              <tr>
+                <td class="algo-name knn">KNN (k=5)</td>
+                <td>0.99</td><td>0.99</td><td>0.99</td>
+                <td class="accuracy-cell">98.60%</td>
+              </tr>
+              <tr>
+                <td class="algo-name ada">AdaBoost</td>
+                <td>0.99</td><td>0.99</td><td>0.99</td>
+                <td class="accuracy-cell">98.59%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="charts-grid" style="margin-top:2rem">
+        <div class="chart-card wide">
+          <h3>Accuracy Comparison</h3>
+          <canvas id="accuracyChart"></canvas>
+        </div>
+        <div class="chart-card wide">
+          <h3>Confusion Matrix — Random Forest (Best Model)</h3>
+          <div class="confusion-matrix">
+            <div class="cm-grid">
+              <div class="cm-label"></div>
+              <div class="cm-label pred">Predicted Low</div>
+              <div class="cm-label pred">Predicted High</div>
+              <div class="cm-label actual">Actual Low</div>
+              <div class="cm-cell tp">35,103<span>True Negative</span></div>
+              <div class="cm-cell fp">322<span>False Positive</span></div>
+              <div class="cm-label actual">Actual High</div>
+              <div class="cm-cell fn">344<span>False Negative</span></div>
+              <div class="cm-cell tn">34,986<span>True Positive</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Predict Section -->
+    <section id="predict" class="section">
+      <h2>Live Prediction</h2>
+      <p class="section-desc">Enter sensor readings to predict whether consumption is <strong>High</strong> or <strong>Low</strong> (simulated using the Random Forest thresholds).</p>
+
+      <div class="predict-container">
+        <div class="predict-form">
+          <div class="form-row">
+            <label>Global Reactive Power (kW)
+              <input type="number" id="inp-grp" step="0.001" value="0.1" min="0" max="2"/>
+            </label>
+            <label>Voltage (V)
+              <input type="number" id="inp-volt" step="0.01" value="241.97" min="220" max="260"/>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Global Intensity (A)
+              <input type="number" id="inp-gi" step="0.1" value="10.6" min="0" max="50"/>
+            </label>
+            <label>Sub Metering 1 (Wh)
+              <input type="number" id="inp-sm1" step="1" value="0" min="0" max="90"/>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Sub Metering 2 (Wh)
+              <input type="number" id="inp-sm2" step="1" value="0" min="0" max="80"/>
+            </label>
+            <label>Sub Metering 3 (Wh)
+              <input type="number" id="inp-sm3" step="1" value="0" min="0" max="20"/>
+            </label>
+          </div>
+          <button id="predict-btn" onclick="runPrediction()">Predict Consumption</button>
+        </div>
+
+        <div class="predict-result" id="predict-result">
+          <div class="result-placeholder">
+            <span>⚡</span>
+            <p>Enter values and click Predict</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Household Power Consumption ML Dashboard &mdash; Dataset: UCI Machine Learning Repository</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
